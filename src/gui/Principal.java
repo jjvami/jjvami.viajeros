@@ -39,6 +39,12 @@ public class Principal {
                 database.conectar();
             }
         });
+        salir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
     public static void main(String[] args) {

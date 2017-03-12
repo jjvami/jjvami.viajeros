@@ -39,7 +39,7 @@ public class ConectarBD extends JDialog {
     public ConectarBD(){
         setContentPane(panel1);
         pack();
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
         setModal(true);
         setLocationRelativeTo(null);
 

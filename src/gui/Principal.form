@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Principal">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="FormLayout">
-    <rowspec value="center:max(d;30px):noGrow"/>
+    <rowspec value="center:10px:noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:35px:noGrow"/>
+    <rowspec value="top:10dlu:noGrow"/>
+    <rowspec value="center:30px:noGrow"/>
+    <rowspec value="top:10dlu:noGrow"/>
     <rowspec value="center:d:noGrow"/>
     <rowspec value="top:10dlu:noGrow"/>
     <rowspec value="center:200px:grow"/>
+    <rowspec value="top:10dlu:noGrow"/>
+    <rowspec value="center:d:noGrow"/>
     <rowspec value="top:10dlu:noGrow"/>
     <rowspec value="center:d:noGrow"/>
     <rowspec value="top:10dlu:noGrow"/>
@@ -24,14 +30,14 @@
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;20px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="1068" height="585"/>
+      <xy x="20" y="20" width="1068" height="737"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <component id="63f31" class="javax.swing.JButton" binding="btNuevo">
         <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -40,7 +46,7 @@
       </component>
       <component id="b457a" class="javax.swing.JButton" binding="btEditar">
         <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -49,7 +55,7 @@
       </component>
       <component id="91d4f" class="javax.swing.JButton" binding="btEliminar">
         <constraints>
-          <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -58,7 +64,7 @@
       </component>
       <component id="c80b0" class="javax.swing.JTextField" binding="tfBuscar">
         <constraints>
-          <grid row="2" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="4" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
           <forms defaultalign-horz="false"/>
@@ -67,7 +73,7 @@
       </component>
       <scrollpane id="656b2">
         <constraints>
-          <grid row="4" column="2" row-span="1" col-span="7" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="2" row-span="1" col-span="7" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -81,7 +87,7 @@
       </scrollpane>
       <component id="3faa" class="javax.swing.JButton" binding="btQuitar">
         <constraints>
-          <grid row="6" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="10" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false"/>
         </constraints>
         <properties>
@@ -90,7 +96,7 @@
       </component>
       <scrollpane id="87ad3">
         <constraints>
-          <grid row="8" column="2" row-span="1" col-span="7" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="14" column="2" row-span="1" col-span="7" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -104,11 +110,41 @@
       </scrollpane>
       <component id="beba9" class="javax.swing.JButton" binding="btAnadir">
         <constraints>
-          <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <forms/>
+          <grid row="10" column="2" row-span="1" col-span="5" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
         </constraints>
         <properties>
           <text value="Añadir"/>
+        </properties>
+      </component>
+      <component id="c0be3" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="12" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="Registro Alta"/>
+        </properties>
+      </component>
+      <component id="957ab" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="Viajeros en la base de datos"/>
+        </properties>
+      </component>
+      <component id="8f50c" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <font size="24"/>
+          <text value="Registro de viajeros"/>
         </properties>
       </component>
     </children>
