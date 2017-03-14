@@ -102,7 +102,7 @@ public class ConectarBD extends JDialog {
     private boolean rellenarTF(){
         Properties configuracion = new Properties();
         try {
-            configuracion.load(new FileInputStream("confifguracionBD"));
+            configuracion.load(new FileInputStream("confifguracionBD.properties"));
             conectarBDHost.setText(String.valueOf(configuracion.get("servidor")));
             conectarBDUsuario.setText(String.valueOf(configuracion.getProperty("usuario")));
             conectarBDPassword.setText(String.valueOf(configuracion.getProperty("contrasena")));

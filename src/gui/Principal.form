@@ -15,7 +15,9 @@
     <rowspec value="top:10dlu:noGrow"/>
     <rowspec value="center:d:noGrow"/>
     <rowspec value="top:10dlu:noGrow"/>
-    <rowspec value="center:200px:grow"/>
+    <rowspec value="center:218px:grow"/>
+    <rowspec value="top:10dlu:noGrow"/>
+    <rowspec value="center:d:noGrow"/>
     <rowspec value="top:5dlu:noGrow"/>
     <rowspec value="center:max(d;20px):noGrow"/>
     <colspec value="fill:max(d;20px):noGrow"/>
@@ -26,11 +28,11 @@
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:100px:grow"/>
+    <colspec value="fill:150px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;20px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="1068" height="737"/>
+      <xy x="20" y="20" width="1068" height="771"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -145,6 +147,15 @@
         <properties>
           <font size="24"/>
           <text value="Registro de viajeros"/>
+        </properties>
+      </component>
+      <component id="20a23" class="javax.swing.JButton" binding="btGenerar">
+        <constraints>
+          <grid row="16" column="2" row-span="1" col-span="7" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <text value="Generar Archivo"/>
         </properties>
       </component>
     </children>

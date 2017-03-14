@@ -85,7 +85,7 @@ public class Database {
         configuracion.setProperty("usuario", this.usuario);
         configuracion.setProperty("contrasena", this.password);
         try {
-            configuracion.store(new FileOutputStream("configuracionBD"), "Archivo de configuracion");
+            configuracion.store(new FileOutputStream("confifguracionBD.properties"), "Archivo de configuracion");
         } catch (FileNotFoundException e){
             e.printStackTrace();
             System.out.println("Error, no se a encontrado el archivo de configuracion");
@@ -96,7 +96,7 @@ public class Database {
     private boolean cargarConfiguracion(){
         Properties configuracion = new Properties();
         try {
-            configuracion.load(new FileInputStream("configuracionBD"));
+            configuracion.load(new FileInputStream("confifguracionBD.properties"));
             this.host = String.valueOf(configuracion.get("servidor"));
             this.combo = String.valueOf(configuracion.getProperty("bd"));
             this.usuario = String.valueOf(configuracion.getProperty("usuario"));
@@ -143,22 +143,24 @@ public class Database {
                 ConstantesViajero.TABLA + " (" +
                 ConstantesViajero.NACIONALIDAD + ", " +
                 ConstantesViajero.DOCUMENTO + ", " +
+                ConstantesViajero.NUMERODOCUMENTO + ", " +
                 ConstantesViajero.FECHAEXPEDICION + ", " +
                 ConstantesViajero.NOMBRE + ", " +
                 ConstantesViajero.APELLIDO1 + ", " +
                 ConstantesViajero.APELLIDO2 + ", " +
                 ConstantesViajero.SEXO + ", " +
                 ConstantesViajero.FECHANACIMIENTO  +
-                " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
         sentencia.setString(1, viajero.getNacionalidad());
         sentencia.setString(2, viajero.getDocumento());
-        sentencia.setDate(3, new Date(viajero.getFecha_expedicion().getTime()));
-        sentencia.setString(4, viajero.getNombre());
-        sentencia.setString(5, viajero.getApellido1());
-        sentencia.setString(6, viajero.getApellido2());
-        sentencia.setString(7, viajero.getSexo());
-        sentencia.setDate(8, new Date(viajero.getFecha_nacimiento().getTime()));
+        sentencia.setString(3, viajero.getNumero_documento());
+        sentencia.setDate(4, new Date(viajero.getFecha_expedicion().getTime()));
+        sentencia.setString(5, viajero.getNombre());
+        sentencia.setString(6, viajero.getApellido1());
+        sentencia.setString(7, viajero.getApellido2());
+        sentencia.setString(8, viajero.getSexo());
+        sentencia.setDate(9, new Date(viajero.getFecha_nacimiento().getTime()));
         sentencia.executeUpdate();
 
         if(sentencia != null){
@@ -172,6 +174,7 @@ public class Database {
                 " SET " +
                 ConstantesViajero.NACIONALIDAD + " =?, " +
                 ConstantesViajero.DOCUMENTO + " =?, " +
+                ConstantesViajero.NUMERODOCUMENTO + " =?, " +
                 ConstantesViajero.FECHAEXPEDICION + " =?, " +
                 ConstantesViajero.NOMBRE + " =?, " +
                 ConstantesViajero.APELLIDO1 + " =?, " +
@@ -183,14 +186,15 @@ public class Database {
         PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
         sentencia.setString(1, viajero.getNacionalidad());
         sentencia.setString(2, viajero.getDocumento());
-        sentencia.setDate(3, new Date(viajero.getFecha_expedicion().getTime()));
-        sentencia.setString(4, viajero.getNombre());
-        sentencia.setString(5, viajero.getApellido1());
-        sentencia.setString(6, viajero.getApellido2());
-        sentencia.setString(7, viajero.getSexo());
-        sentencia.setDate(8, new Date(viajero.getFecha_nacimiento().getTime()));
+        sentencia.setString(3, viajero.getNumero_documento());
+        sentencia.setDate(4, new Date(viajero.getFecha_expedicion().getTime()));
+        sentencia.setString(5, viajero.getNombre());
+        sentencia.setString(6, viajero.getApellido1());
+        sentencia.setString(7, viajero.getApellido2());
+        sentencia.setString(8, viajero.getSexo());
+        sentencia.setDate(9, new Date(viajero.getFecha_nacimiento().getTime()));
         //COMPRARADOR
-        sentencia.setString(9, nombreOriginal);
+        sentencia.setString(10, nombreOriginal);
         sentencia.executeUpdate();
 
         if(sentencia != null){
@@ -243,11 +247,12 @@ public class Database {
         Viajero viajero = new Viajero();
         viajero.setId(resultado.getInt(1));
         viajero.setDocumento(resultado.getString(2));
-        viajero.setFecha_expedicion(resultado.getDate(3));
-        viajero.setApellido1(resultado.getString(4));
-        viajero.setApellido2(resultado.getString(5));
-        viajero.setSexo(resultado.getString(6));
-        viajero.setFecha_nacimiento(resultado.getDate(7));
+        viajero.setDocumento(resultado.getString(3));
+        viajero.setFecha_expedicion(resultado.getDate(4));
+        viajero.setApellido1(resultado.getString(5));
+        viajero.setApellido2(resultado.getString(6));
+        viajero.setSexo(resultado.getString(7));
+        viajero.setFecha_nacimiento(resultado.getDate(8));
 
         return viajero;
     }
@@ -258,12 +263,15 @@ public class Database {
         while (resultado.next()){
             viajero = new Viajero();
             viajero.setId(resultado.getInt(1));
-            viajero.setDocumento(resultado.getString(2));
-            viajero.setFecha_expedicion(resultado.getDate(3));
-            viajero.setApellido1(resultado.getString(4));
-            viajero.setApellido2(resultado.getString(5));
-            viajero.setSexo(resultado.getString(6));
-            viajero.setFecha_nacimiento(resultado.getDate(7));
+            viajero.setNacionalidad(resultado.getString(2));
+            viajero.setDocumento(resultado.getString(3));
+            viajero.setNumero_documento(resultado.getString(4));
+            viajero.setFecha_expedicion(resultado.getDate(5));
+            viajero.setNombre(resultado.getString(6));
+            viajero.setApellido1(resultado.getString(7));
+            viajero.setApellido2(resultado.getString(8));
+            viajero.setSexo(resultado.getString(9));
+            viajero.setFecha_nacimiento(resultado.getDate(10));
             viajeros.add(viajero);
         }
         return viajeros;
