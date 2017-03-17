@@ -8,10 +8,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -76,8 +75,44 @@ public class Principal {
                 quitarRegistro();
             }
         });
+        tfBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+               buscador();
+            }
+        });
     }
 
+    private void buscador(){
+        if(tfBuscar.getText().equalsIgnoreCase("")){
+            rellenarTablas();
+        }else {
+            try {
+                modeloTablaViajeros.setNumRows(0);
+                List<Viajero> viajeros = database.busquedaNombre(tfBuscar.getText().toUpperCase());
+                if(viajeros.isEmpty()){
+                    viajeros = database.busquedaNDocumento(tfBuscar.getText().toUpperCase());
+                }
+                for (Viajero viajero : viajeros) {
+                    Object[] fila = new Object[]{
+                            viajero.getId(),
+                            viajero.getNacionalidad(),
+                            viajero.getDocumento(),
+                            viajero.getNumero_documento(),
+                            String.valueOf(viajero.getFecha_expedicion()),
+                            viajero.getNombre(),
+                            viajero.getApellido1(),
+                            viajero.getApellido2(),
+                            viajero.getSexo(),
+                            String.valueOf(viajero.getFecha_nacimiento())
+                    };
+                    modeloTablaViajeros.addRow(fila);
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
     private void anadirRegistro(){
         int row = tableBD.getSelectedRow();
         if(row == -1){

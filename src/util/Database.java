@@ -34,6 +34,9 @@ public class Database {
         }
     }
 
+    /**
+     * Si hay archivo de configuracion se autoconecta a la BD.
+     */
     private void autoConectar(){
         cargarConfiguracion();
         try {
@@ -51,6 +54,10 @@ public class Database {
             iae.printStackTrace();
         }
     }
+
+    /**
+     * Conecta con la BD
+     */
     public void conectar() {
         ConectarBD dialogoConexion = new ConectarBD();
         if (dialogoConexion.mostrarDialogo() == ConectarBD.Accion.CANCELAR){
@@ -78,6 +85,10 @@ public class Database {
             iae.printStackTrace();
         }
     }
+
+    /**
+     * Guarda loss datos de configuracion de la BD en un archivo, si el archivo no existe lo crea y si no lo sobreescribe.
+     */
     private void guardarConfiguracion(){
         Properties configuracion = new Properties();
         configuracion.setProperty("servidor", this.host);
@@ -93,6 +104,11 @@ public class Database {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Carga la configuracion de la bd a partir del fichero de configuracion, si todo va bien retorna true.
+     * @return
+     */
     private boolean cargarConfiguracion(){
         Properties configuracion = new Properties();
         try {
@@ -107,34 +123,6 @@ public class Database {
             e.printStackTrace();
         }
         return true;
-    }
-
-
-    public int getId(String nombre, String tabla){
-        int id = 0;
-        try {
-            Statement sentencia = conexion.createStatement();
-            id = sentencia.executeUpdate("SELECT id from " + tabla + " WHERE nombre = " + nombre);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
-    }
-    public String getNombre(int id, String tabla){
-        String nombre = null;
-        try {
-            Statement sentencia = conexion.createStatement();
-            ResultSet resultado = sentencia.executeQuery("SELECT nombre from " + tabla + " WHERE id = " + id);
-
-            while(resultado.next()){
-                nombre = resultado.getString(2);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return nombre;
     }
 
     //VIAJERO
@@ -201,14 +189,20 @@ public class Database {
             sentencia.close();
         }
     }
-    public void eliminarViajero(String nombre) throws SQLException{
+
+    /**
+     * Elimina un viajero de la BD a partir del numero de documento.
+     * @param ndocumento
+     * @throws SQLException
+     */
+    public void eliminarViajero(String ndocumento) throws SQLException{
         String sentenciaSql = "DELETE FROM " +
                 ConstantesViajero.TABLA +
                 " WHERE " +
-                ConstantesViajero.NOMBRE + " =? ";
+                ConstantesViajero.NUMERODOCUMENTO + " =? ";
 
         PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
-        sentencia.setString(1, nombre);
+        sentencia.setString(1, ndocumento);
         sentencia.executeUpdate();
 
         if(sentencia != null){
@@ -216,6 +210,12 @@ public class Database {
         }
 
     }
+
+    /**
+     * Devuelve una arraylist de viajeros con todos los que hay en la BD.
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<Viajero> getViajeros() throws SQLException{
         ArrayList <Viajero> viajeros;
 
@@ -235,27 +235,13 @@ public class Database {
         }
         return viajeros;
     }
-    public Viajero getViajero(String nombre) throws SQLException{
-        String consulta = "SELECT * FROM " + ConstantesViajero.TABLA + " WHERE " +
-                ConstantesViajero.NOMBRE + " =? ";
-        PreparedStatement sentencia = conexion.prepareStatement(consulta);
-        sentencia.setString(1, nombre);
-        ResultSet resultado = sentencia.executeQuery();
 
-        resultado.next();
-
-        Viajero viajero = new Viajero();
-        viajero.setId(resultado.getInt(1));
-        viajero.setDocumento(resultado.getString(2));
-        viajero.setDocumento(resultado.getString(3));
-        viajero.setFecha_expedicion(resultado.getDate(4));
-        viajero.setApellido1(resultado.getString(5));
-        viajero.setApellido2(resultado.getString(6));
-        viajero.setSexo(resultado.getString(7));
-        viajero.setFecha_nacimiento(resultado.getDate(8));
-
-        return viajero;
-    }
+    /**
+     * Devuelve un arraylist de viajeros a parti del resultado de una sentencia sql
+     * @param resultado
+     * @return
+     * @throws SQLException
+     */
     private ArrayList<Viajero> crearListaViajero(ResultSet resultado) throws SQLException{
         ArrayList<Viajero> viajeros = new ArrayList<>();
 
@@ -273,6 +259,57 @@ public class Database {
             viajero.setSexo(resultado.getString(9));
             viajero.setFecha_nacimiento(resultado.getDate(10));
             viajeros.add(viajero);
+        }
+        return viajeros;
+    }
+
+    /**
+     * Busca en en la BD por nombre y devuelve un array con los viajeros que coinciden en la busqueda.
+     * @param nombre
+     * @return un array de viajeros
+     * @throws SQLException
+     */
+    public ArrayList<Viajero> busquedaNombre(String nombre) throws SQLException{
+        ArrayList <Viajero> viajeros;
+
+        String consulta = null;
+        PreparedStatement sentencia = null;
+        ResultSet resultado = null;
+
+        consulta = "SELECT * FROM " + ConstantesViajero.TABLA + " WHERE nombre LIKE '" + nombre + "%'";
+        sentencia = conexion.prepareStatement(consulta);
+        resultado = sentencia.executeQuery();
+
+        viajeros = crearListaViajero(resultado);
+
+        if(sentencia != null){
+            sentencia.close();
+        }
+        return viajeros;
+    }
+
+    /**
+     * Busca en en la BD por numero de documento y devuelve un array con los viajeros que coinciden en la busqueda.
+     * @param documento
+     * @return un array de viajeros
+     * @throws SQLException
+     */
+    public ArrayList<Viajero> busquedaNDocumento(String documento) throws SQLException{
+        ArrayList <Viajero> viajeros;
+
+        String consulta = null;
+        PreparedStatement sentencia = null;
+        ResultSet resultado = null;
+
+        consulta = "SELECT * FROM " + ConstantesViajero.TABLA + " WHERE numero_documento LIKE '" + documento + "%'";
+        sentencia = conexion.prepareStatement(consulta);
+        resultado = sentencia.executeQuery();
+
+
+        viajeros = crearListaViajero(resultado);
+
+        if(sentencia != null){
+            sentencia.close();
         }
         return viajeros;
     }
