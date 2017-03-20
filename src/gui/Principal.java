@@ -3,6 +3,7 @@ package gui;
 import base.Viajero;
 import util.ConstantesViajero;
 import util.Database;
+import util.GenerarFichero;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,8 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.table.TableModel;
 
 /**
  * Created by Juan Jose Vallespin Millan on 09/03/2017.
@@ -33,6 +37,7 @@ public class Principal {
     public JMenu archivo;
     public JMenuItem conectarBd;
     public JMenuItem datosEmpresa;
+    public JMenuItem refrecar;
     public JMenuItem salir;
 
     public static Database database;
@@ -51,6 +56,12 @@ public class Principal {
                 database.conectar();
             }
         });
+        refrecar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rellenarTablas();
+            }
+        });
         salir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +71,13 @@ public class Principal {
         btNuevo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                nuevoViajero();
+            }
+        });
+        btEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editiarViajero();
             }
         });
         btAnadir.addActionListener(new ActionListener() {
@@ -69,10 +86,22 @@ public class Principal {
                 anadirRegistro();
             }
         });
+        btEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarViajero();
+            }
+        });
         btQuitar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 quitarRegistro();
+            }
+        });
+        btGenerar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guardarFichero();
             }
         });
         tfBuscar.addKeyListener(new KeyAdapter() {
@@ -82,7 +111,51 @@ public class Principal {
             }
         });
     }
+    private void editiarViajero(){
 
+        int row = tableBD.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(null, "Selecione un viajero en la tabla viajeros en la base de datos");
+        }else{
+            Viajero viajero = null;
+            try {
+                viajero = database.getViajero((Integer) modeloTablaViajeros.getValueAt(row, 0));
+                VentanaViajero dialogoViajero = new VentanaViajero(viajero);
+                if(dialogoViajero.mostrarDialogo() == VentanaViajero.Accion.CANCELAR){
+                    return;
+                }
+                database.modificarVIajero((Integer) modeloTablaViajeros.getValueAt(row, 0), dialogoViajero.getViajero());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        rellenarTablas();
+    }
+    private void nuevoViajero(){
+        VentanaViajero dialogoViajero = new VentanaViajero();
+        if(dialogoViajero.mostrarDialogo() == VentanaViajero.Accion.CANCELAR){
+            return;
+        }
+        try {
+            database.nuevoViajero(dialogoViajero.getViajero());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        rellenarTablas();
+    }
+    private void eliminarViajero(){
+        int row = tableBD.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(null, "Selecione un viajero en la tabla viajeros en la base de datos");
+        }else{
+            try {
+                database.eliminarViajero((Integer) modeloTablaViajeros.getValueAt(row, 0));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        rellenarTablas();
+    }
     private void buscador(){
         if(tfBuscar.getText().equalsIgnoreCase("")){
             rellenarTablas();
@@ -216,10 +289,27 @@ public class Principal {
         conectarBd = new JMenuItem("Configuracion Base de Datos");
         archivo.add(conectarBd);
 
+        refrecar = new JMenuItem("Refrescar");
+        archivo.add(refrecar);
+
         datosEmpresa = new JMenuItem("Datos Empresa");
         salir = new JMenuItem("Salir");
         archivo.add(datosEmpresa);
         archivo.add(salir);
+    }
+    private void guardarFichero() {
+        String contenido = "";
+        TableModel tableModel = tableFichero.getModel();
+        int cols = tableModel.getColumnCount();
+        int rows = tableModel.getRowCount();
+        for(int i=0; i<rows; i++) {
+            for(int j=1; j<cols; j++){
+                contenido += tableModel.getValueAt(i,j)+"/";//TODO Falta preparar el formato del contenido del archivo y el nombre.
+            }
+            contenido += "\n";
+        }
+
+        GenerarFichero fichero = new GenerarFichero(contenido);
     }
 }
 
