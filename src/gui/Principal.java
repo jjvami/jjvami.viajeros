@@ -316,22 +316,25 @@ public class Principal {
         archivo.add(salir);
     }
     private void guardarFichero() {
-        Date date = new Date();
-        String fecha = new SimpleDateFormat("yyyyMMdd").format(date);
-        String hora = new SimpleDateFormat("hhmm").format(date);
-        TableModel tableModel = tableFichero.getModel();
-        int cols = tableModel.getColumnCount();
-        int rows = tableModel.getRowCount();
-        String contenido = "1|" + empresa.getCodigo() + "|" + empresa.getNombre() + "|" + fecha + "|" + hora + "|" + rows + "|\n" +
-                            "2|";
-        for(int i=0; i<rows; i++) {
-            for(int j=1; j<cols; j++){
-                contenido += tableModel.getValueAt(i,j)+"|";//TODO Falta preparar el formato del contenido del archivo y el nombre.
+        if (empresa == null){
+            JOptionPane.showMessageDialog(null, "Los datos de la empresa no estan introducidos");
+        }else {
+            Date date = new Date();
+            String fecha = new SimpleDateFormat("yyyyMMdd").format(date);
+            String hora = new SimpleDateFormat("hhmm").format(date);
+            TableModel tableModel = tableFichero.getModel();
+            int cols = tableModel.getColumnCount();
+            int rows = tableModel.getRowCount();
+            String contenido = "1|" + empresa.getCodigo() + "|" + empresa.getNombre() + "|" + fecha + "|" + hora + "|" + rows + "|\n";
+            for(int i=0; i<rows; i++) {
+                contenido += "2|";
+                for(int j=1; j<cols; j++){
+                    contenido += tableModel.getValueAt(i,j)+"|";
+                }
+                contenido += "\n";
             }
-            contenido += "\n";
+            new GenerarFichero(contenido);
         }
-
-        GenerarFichero fichero = new GenerarFichero(contenido);
     }
 }
 
