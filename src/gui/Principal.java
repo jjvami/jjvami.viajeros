@@ -14,6 +14,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.table.TableModel;
@@ -314,13 +316,17 @@ public class Principal {
         archivo.add(salir);
     }
     private void guardarFichero() {
-        String contenido = "";
+        Date date = new Date();
+        String fecha = new SimpleDateFormat("yyyyMMdd").format(date);
+        String hora = new SimpleDateFormat("hhmm").format(date);
         TableModel tableModel = tableFichero.getModel();
         int cols = tableModel.getColumnCount();
         int rows = tableModel.getRowCount();
+        String contenido = "1|" + empresa.getCodigo() + "|" + empresa.getNombre() + "|" + fecha + "|" + hora + "|" + rows + "|\n" +
+                            "2|";
         for(int i=0; i<rows; i++) {
             for(int j=1; j<cols; j++){
-                contenido += tableModel.getValueAt(i,j)+"/";//TODO Falta preparar el formato del contenido del archivo y el nombre.
+                contenido += tableModel.getValueAt(i,j)+"|";//TODO Falta preparar el formato del contenido del archivo y el nombre.
             }
             contenido += "\n";
         }
