@@ -1,5 +1,6 @@
 package gui;
 
+import base.Empresa;
 import base.Viajero;
 import util.ConstantesViajero;
 import util.Database;
@@ -41,6 +42,7 @@ public class Principal {
     public JMenuItem salir;
 
     public static Database database;
+    private Empresa empresa;
 
     private DefaultTableModel modeloTablaViajeros;
     private DefaultTableModel modeloTablaRegistro;
@@ -48,12 +50,19 @@ public class Principal {
     public Principal(){
         crearJMenuBar();
         database = new Database();
+        empresa = new Empresa();
         inicializarTablas();
 
         conectarBd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 database.conectar();
+            }
+        });
+        datosEmpresa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                datosEmpresa();
             }
         });
         refrecar.addActionListener(new ActionListener() {
@@ -269,6 +278,13 @@ public class Principal {
             modeloTablaViajeros.addRow(fila);
         }
         modeloTablaRegistro.setNumRows(0);
+    }
+    private void datosEmpresa(){
+        VentanaEmpresa dialogoEmpresa = new VentanaEmpresa();
+        if(dialogoEmpresa.mostrarDialogo() == VentanaEmpresa.Accion.CANCELAR){
+            return;
+        }
+        empresa = dialogoEmpresa.getEmpresa();
     }
 
     public static void main(String[] args) {

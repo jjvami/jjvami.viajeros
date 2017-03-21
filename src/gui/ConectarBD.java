@@ -119,6 +119,7 @@ public class ConectarBD extends JDialog {
         usuario = conectarBDUsuario.getText();
         password = conectarBDPassword.getText();
         combo = (String) conectarBDCbBaseDatos.getSelectedItem();
+
         accion = Accion.ACEPTAR;
         setVisible(false);
     }

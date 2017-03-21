@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 public class VentanaViajero extends JDialog {
     private JPanel panel1;
-    private JTextField tfDocumento;
     private JTextField tfNDocumento;
     private JTextField tfNombre;
     private JTextField tfApellido1;
@@ -134,9 +133,6 @@ public class VentanaViajero extends JDialog {
             return false;
         }
         else if(tfApellido1.getText().equalsIgnoreCase("")){
-            return false;
-        }
-        else if(tfApellido2.getText().equalsIgnoreCase("")){
             return false;
         }
         else if(dcFechaNacimiento.getDate() == null){
