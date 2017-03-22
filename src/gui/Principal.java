@@ -2,6 +2,7 @@ package gui;
 
 import base.Empresa;
 import base.Viajero;
+import util.ActualizarDatos;
 import util.ConstantesViajero;
 import util.Database;
 import util.GenerarFichero;
@@ -45,15 +46,18 @@ public class Principal {
 
     public static Database database;
     private Empresa empresa;
+    private ActualizarDatos autoActualizar;
 
-    private DefaultTableModel modeloTablaViajeros;
-    private DefaultTableModel modeloTablaRegistro;
+    private static DefaultTableModel modeloTablaViajeros;
+    private static DefaultTableModel modeloTablaRegistro;
 
     public Principal(){
         crearJMenuBar();
+        autoActualizar = new ActualizarDatos();
         database = new Database();
         empresa = new Empresa();
         inicializarTablas();
+        autoActualizar.execute();
 
         conectarBd.addActionListener(new ActionListener() {
             @Override
@@ -255,7 +259,7 @@ public class Principal {
 
         rellenarTablas();
     }
-    private void rellenarTablas(){
+    public static void rellenarTablas(){
         List<Viajero> viajeros = null;
         try {
             viajeros = database.getViajeros();
