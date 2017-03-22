@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by juanjo on 29/12/2014.
+ * Clase en la que se encarga del dialogo para conectar con la base de datos.
  */
 public class ConectarBD extends JDialog {
     private JPanel panel1;
@@ -49,7 +49,6 @@ public class ConectarBD extends JDialog {
 
         conexion=null;
 
-
         conectarBDBtAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +63,7 @@ public class ConectarBD extends JDialog {
                 listarCombos();
             }
         });
+
         concectarBDBtCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,6 +72,9 @@ public class ConectarBD extends JDialog {
         });
     }
 
+    /**
+     * Metodo en el que relleno el comboBox con las BD que tiene acceso el usario de la BD.
+     */
     public void listarCombos(){
         if (conectarBDCbBaseDatos.getItemCount()>0){
             return;
@@ -96,9 +99,12 @@ public class ConectarBD extends JDialog {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
+
+    /**
+     * //Metodo en el que en casa de que ya tengamos una BD configurada y la queramos cambiar, rellenara los campos con la informcaion de la BD actual.
+     * @return
+     */
     private boolean rellenarTF(){
         Properties configuracion = new Properties();
         try {
@@ -113,7 +119,9 @@ public class ConectarBD extends JDialog {
         return true;
     }
 
-
+    /**
+     * Metodo que cierra el dialogo y rellena las variables.
+     */
     public void aceptar(){
         host = conectarBDHost.getText();
         usuario = conectarBDUsuario.getText();
@@ -123,11 +131,25 @@ public class ConectarBD extends JDialog {
         accion = Accion.ACEPTAR;
         setVisible(false);
     }
+
+    /**
+     * Metodo que cierra el dialogo.
+     */
     public void cancelar(){
         accion = Accion.CANCELAR;
         setVisible(false);
     }
 
+    /**
+     * Metodo para saber la accion final del dialogo(Aceptar o cancelar).
+     * @return
+     */
+    public Accion mostrarDialogo(){
+        setVisible(true);
+        return  accion;
+    }
+
+    // Getters y Setters
     public String getHost() {
         return host;
     }
@@ -151,9 +173,5 @@ public class ConectarBD extends JDialog {
     }
     public void setCombo(String combo) {
         this.combo = combo;
-    }
-    public Accion mostrarDialogo(){
-        setVisible(true);
-        return  accion;
     }
 }

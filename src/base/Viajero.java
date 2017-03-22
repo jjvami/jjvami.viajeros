@@ -3,7 +3,7 @@ package base;
 import java.sql.Date;
 
 /**
- * Created by sobremesa on 09/03/2017.
+ * Objeto en el que se almacena la informacion relacionada a un viajero
  */
 public class Viajero {
     private int id;
@@ -17,6 +17,7 @@ public class Viajero {
     private String sexo;
     private Date fecha_nacimiento;
 
+    // Getters y Setters
     public int getId() {
         return id;
     }

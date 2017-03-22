@@ -1,11 +1,13 @@
 package base;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Created by juanj on 20/03/2017.
+ * Objeto en el que se almacena el nombre y codigo de la empresa, en la carga del objeto se busca un fichero,
+ * si este existe rellena el objeto con las informacion del fichero.
  */
 public class Empresa {
 
@@ -20,8 +22,11 @@ public class Empresa {
             codigo = String.valueOf(configuracion.getProperty("codigo"));
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Los datos de la empresa no estan introducidos");
         }
     }
+
+    // Getters y Setters
 
     public String getNombre() {
         return nombre;

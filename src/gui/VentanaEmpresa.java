@@ -14,7 +14,7 @@ import java.sql.Date;
 import java.util.Properties;
 
 /**
- * Created by sobremesa on 21/03/2017.
+ * Clase en la que se encarga del dialogo para crear el archivo de datos de la empresa.
  */
 public class VentanaEmpresa extends JDialog {
     private JPanel panel1;
@@ -53,10 +53,19 @@ public class VentanaEmpresa extends JDialog {
             }
         });
     }
+
+    /**
+     * Metodo para saber la accion final del dialogo(Aceptar o cancelar).
+     * @return
+     */
     public Accion mostrarDialogo(){
         setVisible(true);
         return  accion;
     }
+
+    /**
+     * Metodo que guarda los datos de la empresa introducidos en un fichero, si este no existe los crea.
+     */
     private void guardarDatos(){
         Properties configuracion = new Properties();
         configuracion.setProperty("nombre", tfNombre.getText().toUpperCase());
@@ -65,12 +74,15 @@ public class VentanaEmpresa extends JDialog {
             configuracion.store(new FileOutputStream("datosEmpresa.properties"), "Archivo de datos");
         } catch (FileNotFoundException e){
             e.printStackTrace();
-            System.out.println("Error, no se a encontrado el archivo de datos");
+            JOptionPane.showMessageDialog(null, "Error, no se a encontrado el archivo de datos");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Metodo que rellena los campos del dialogo si hay un archivo de datos de empresa.
+     */
     private void rellenarCampos(){
         Properties configuracion = new Properties();
         try {
@@ -81,6 +93,10 @@ public class VentanaEmpresa extends JDialog {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metodo que se encarga de que al pulsar el boton aceptar estos se guarde en el fichero y el el objeto de la clase.
+     */
     private void Aceptar(){
         guardarDatos();
         this.empresa.setNombre(tfNombre.getText().toUpperCase());
@@ -89,11 +105,19 @@ public class VentanaEmpresa extends JDialog {
         accion = Accion.ACEPTAR;
         setVisible(false);
     }
+
+    /**
+     * Metodo que cierra el dialogo.
+     */
     public void Cancelar(){
         accion = Accion.CANCELAR;
         setVisible(false);
     }
 
+    /**
+     * Metodo getter de empresa.
+     * @return
+     */
     public Empresa getEmpresa() {
         return empresa;
     }

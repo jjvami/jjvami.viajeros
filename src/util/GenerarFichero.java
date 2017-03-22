@@ -6,12 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Created by juanjo on 20/03/2017.
+ * Clase que genera un fichero con el texto proporcionado.
  */
 public class GenerarFichero extends JFrame{
     public GenerarFichero(String texto){
         try{
-            String nombre="eeeeee";
             JFileChooser file = new JFileChooser();
             file.showSaveDialog(this);
             File guarda =file.getSelectedFile();

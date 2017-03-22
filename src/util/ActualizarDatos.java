@@ -5,7 +5,7 @@ import gui.Principal;
 import javax.swing.*;
 
 /**
- * Created by sobremesa on 21/03/2017.
+ * Clase que actualiza en un proceso en background la tabla de viajeros cada 1 minuto.
  */
 public class ActualizarDatos extends SwingWorker{
     @Override

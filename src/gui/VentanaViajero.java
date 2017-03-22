@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Juan Jose Vallespin Millan on 19/03/2017.
+ * Clase que se ocupa de hacer todas las acciones relacionadas con los viajeros.
  */
 public class VentanaViajero extends JDialog {
     private JPanel panel1;
@@ -27,7 +27,7 @@ public class VentanaViajero extends JDialog {
     private JComboBox cbNacionalidad;
     private JComboBox cbDocumento;
 
-    private base.Viajero viajero;
+    private Viajero viajero;
 
     public enum Accion{
         ACEPTAR, CANCELAR
@@ -35,6 +35,9 @@ public class VentanaViajero extends JDialog {
     private Accion accion;
     private Database database;
 
+    /**
+     * Metodo de carga para cuando queremos hacer un nuevo viajero.
+     */
     public VentanaViajero(){
         setContentPane(panel1);
         pack();
@@ -60,6 +63,10 @@ public class VentanaViajero extends JDialog {
         });
     }
 
+    /**
+     * Metodo de carga para cuando queremos editar un viajero.
+     * @param viajero
+     */
     public VentanaViajero(Viajero viajero){
         setContentPane(panel1);
         pack();
@@ -71,6 +78,7 @@ public class VentanaViajero extends JDialog {
         rellenarCombos();
         setViajero(viajero);
         rellenarCampos();
+
         btAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,10 +93,10 @@ public class VentanaViajero extends JDialog {
             }
         });
     }
-    public void setViajero(Viajero viajero){
-        this.viajero = viajero;
-    }
 
+    /**
+     * Rellega los comboBox de la interfaz.
+     */
     private void rellenarCombos(){
 
         //Combo Box sexo
@@ -114,6 +122,10 @@ public class VentanaViajero extends JDialog {
         cbDocumento.addItem("Permiso de residencia español");
         cbDocumento.addItem("Permiso de residencia extrangero");
     }
+
+    /**
+     * Rellena los campos de la interfaz con los datos proprcionados en el objeto viajero
+     */
     private void rellenarCampos(){
         cbNacionalidad.setSelectedItem(viajero.getNacionalidad());
         cbDocumento.setSelectedItem(viajero.getDocumento());
@@ -125,6 +137,11 @@ public class VentanaViajero extends JDialog {
         cbSexo.setSelectedItem(viajero.getSexo());
         dcFechaNacimiento.setDate(viajero.getFecha_nacimiento());
     }
+
+    /**
+     * Comprueba que los campos obligatorios estan rellenados.
+     * @return
+     */
     private boolean comprobarCampos(){
         if(tfNDocumento.getText().equalsIgnoreCase("")){
             return false;
@@ -145,6 +162,10 @@ public class VentanaViajero extends JDialog {
             return true;
         }
     }
+
+    /**
+     * Metodo que se encarga de que al pulsar el boton aceptar, se rellene el viajero con las informcaion de los campos de la interfaz.
+     */
     private void Aceptar(){
         if(comprobarCampos()){
             if(this.viajero == null){
@@ -169,16 +190,30 @@ public class VentanaViajero extends JDialog {
             JOptionPane.showMessageDialog(null, "Falta algun campo por rellenar");
         }
     }
+
+    /**
+     * Metodo que cierra el dialogo.
+     */
     public void Cancelar(){
         accion = Accion.CANCELAR;
         setVisible(false);
     }
+
+    /**
+     * Metodo para saber la accion final del dialogo(Aceptar o cancelar).
+     * @return
+     */
     public Accion mostrarDialogo(){
         setVisible(true);
         return  accion;
     }
 
+    // Getters y Setters
+
     public Viajero getViajero() {
         return viajero;
+    }
+    public void setViajero(Viajero viajero){
+        this.viajero = viajero;
     }
 }

@@ -1,7 +1,7 @@
 package util;
 
 /**
- * Created by Juan Jose Vallespin Millan
+ * Clase que contiene las constante de la tabla viajero de la BD.
  */
 public class ConstantesViajero {
     public final static String TABLA = "Viajeros";

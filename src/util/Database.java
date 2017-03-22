@@ -15,7 +15,7 @@ import java.util.Properties;
 
 
 /**
- * Created by juanjo.
+ * Clase donde se gestiona la BD.
  */
 public class Database {
 
@@ -126,6 +126,12 @@ public class Database {
     }
 
     //VIAJERO
+
+    /**
+     * Metodo que guarda un nuevo viajero en la BD.
+     * @param viajero
+     * @throws SQLException
+     */
     public void nuevoViajero(Viajero viajero) throws SQLException{
         String sentenciaSql= "INSERT INTO " +
                 ConstantesViajero.TABLA + " (" +
@@ -156,6 +162,13 @@ public class Database {
         }
 
     }
+
+    /**
+     * Metodo que modifica un viajero en la BD.
+     * @param id
+     * @param viajero
+     * @throws SQLException
+     */
     public void modificarVIajero(int id, Viajero viajero) throws SQLException{
         String sentenciaSql= " UPDATE " +
                 ConstantesViajero.TABLA +
@@ -190,6 +203,11 @@ public class Database {
         }
     }
 
+    /**
+     * Metodo que elimina un viajero en la BD.
+     * @param id
+     * @throws SQLException
+     */
     public void eliminarViajero(int id) throws SQLException{
         String sentenciaSql = "DELETE FROM " +
                 ConstantesViajero.TABLA +
@@ -205,6 +223,13 @@ public class Database {
         }
 
     }
+
+    /**
+     * Metodo que devuelve el viajero correspondiente a la id otrogada.
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public Viajero getViajero(int id) throws SQLException{
         String consulta = "SELECT * FROM " + ConstantesViajero.TABLA + " WHERE " + ConstantesViajero.ID + " = " + id;
         PreparedStatement sentencia = conexion.prepareStatement(consulta);
@@ -316,6 +341,11 @@ public class Database {
         return viajeros;
     }
 
+    /**
+     * Devuelve todos los paises que hay guardados en la BD.
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<String> getPaises() throws SQLException {
         String consulta = "SELECT * FROM paises";
         PreparedStatement sentencia = conexion.prepareStatement(consulta);

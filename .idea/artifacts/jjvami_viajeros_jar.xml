@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jjvami.viajeros:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jjvami_viajeros_jar</output-path>
+    <root id="archive" name="jjvami.viajeros.jar">
+      <element id="module-output" name="jjvami.viajeros" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-forms-1.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-common-1.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/junit-4.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jcalendar-1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-looks-2.4.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jgoodies-common-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/mysql-connector-java-5.0.8-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
