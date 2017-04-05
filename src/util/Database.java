@@ -19,46 +19,63 @@ import java.util.Properties;
  */
 public class Database {
 
-    private Connection conexion;
-    private String host;
-    private String usuario;
-    private String password;
-    private String combo;
+    private Connection conexion = null;
+    private String host = null;
+    private String usuario = null;
+    private String password = null;
+    private String combo = null;
 
-    public Database(){
-        cargarConfiguracion();
-        if(host == null){
-            conectar();
-        }else{
-            autoConectar();
+    public Database() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
+        try {
+            cargarConfiguracion();
+        }catch (IOException e){
+            throw (e);
+        } finally {
+            try {
+                if(host == null){
+                    conectar();
+                }else{
+                    autoConectar();
+                }
+            } catch (SQLException e) {
+                throw (e);
+            } catch (ClassNotFoundException e) {
+                throw (e);
+            } catch (InstantiationException e) {
+                throw (e);
+            } catch (IllegalAccessException e) {
+                throw (e);
+            } catch (IOException e) {
+                throw (e);
+            }
         }
     }
 
     /**
      * Si hay archivo de configuracion se autoconecta a la BD.
      */
-    private void autoConectar(){
-        cargarConfiguracion();
+    private void autoConectar() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
         try {
+            cargarConfiguracion();
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":3306" + "/" + combo, usuario, password);
-
         } catch (ClassNotFoundException cnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido cargar el driver de la Base de Datos");
+            throw (cnfe);
         } catch (SQLException sqle) {
-            JOptionPane.showMessageDialog(null, "No se ha podido conectar con la Base de Datos");
-            sqle.printStackTrace();
+            throw (sqle);
         } catch (InstantiationException ie) {
-            ie.printStackTrace();
+            throw (ie);
         } catch (IllegalAccessException iae) {
-            iae.printStackTrace();
+            throw (iae);
+        } catch (IOException e) {
+            throw (e);
         }
     }
 
     /**
      * Conecta con la BD
      */
-    public void conectar() {
+    public void conectar() throws IOException, SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         ConectarBD dialogoConexion = new ConectarBD();
         if (dialogoConexion.mostrarDialogo() == ConectarBD.Accion.CANCELAR){
             return;
@@ -68,61 +85,74 @@ public class Database {
         usuario = dialogoConexion.getUsuario();
         password = dialogoConexion.getPassword();
         combo = dialogoConexion.getCombo();
-        guardarConfiguracion();
 
         try {
+            guardarConfiguracion();
+            System.out.println("1");
+        } catch (IOException e) {
+            throw(e);
+        }
+
+        try {
+            System.out.println("2");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":3306" + "/" + combo, usuario, password);
-
-        } catch (ClassNotFoundException cnfe) {
-            JOptionPane.showMessageDialog(null, "No se ha podido cargar el driver de la Base de Datos");
-        } catch (SQLException sqle) {
-            JOptionPane.showMessageDialog(null, "No se ha podido conectar con la Base de Datos");
-            sqle.printStackTrace();
-        } catch (InstantiationException ie) {
-            ie.printStackTrace();
-        } catch (IllegalAccessException iae) {
-            iae.printStackTrace();
+        } catch (InstantiationException e) {
+            throw(e);
+        } catch (IllegalAccessException e) {
+            throw(e);
+        } catch (ClassNotFoundException e) {
+            throw(e);
+        } catch (SQLException e) {
+            throw(e);
         }
+        System.out.println("4");
     }
 
     /**
      * Guarda loss datos de configuracion de la BD en un archivo, si el archivo no existe lo crea y si no lo sobreescribe.
      */
-    private void guardarConfiguracion(){
+    private void guardarConfiguracion() throws IOException{
         Properties configuracion = new Properties();
         configuracion.setProperty("servidor", this.host);
         configuracion.setProperty("bd", this.combo);
         configuracion.setProperty("usuario", this.usuario);
         configuracion.setProperty("contrasena", this.password);
+        FileOutputStream fichero = null;
+
         try {
-            configuracion.store(new FileOutputStream("confifguracionBD.properties"), "Archivo de configuracion");
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-            System.out.println("Error, no se a encontrado el archivo de configuracion");
+            configuracion.store(fichero = new FileOutputStream("confifguracionBD.properties"), "Archivo de configuracion");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (e);
+        } finally {
+            if(fichero != null){
+                fichero.close();
+            }
         }
     }
 
     /**
-     * Carga la configuracion de la bd a partir del fichero de configuracion, si todo va bien retorna true.
-     * @return
+     * Carga la configuracion de la bd a partir del fichero de configuracion.
      */
-    private boolean cargarConfiguracion(){
+    private void cargarConfiguracion() throws IOException {
         Properties configuracion = new Properties();
+        FileInputStream fichero = null;
+
         try {
-            configuracion.load(new FileInputStream("confifguracionBD.properties"));
+            configuracion.load(fichero = new FileInputStream("confifguracionBD.properties"));
             this.host = String.valueOf(configuracion.get("servidor"));
             this.combo = String.valueOf(configuracion.getProperty("bd"));
             this.usuario = String.valueOf(configuracion.getProperty("usuario"));
             this.password = String.valueOf(configuracion.getProperty("contrasena"));
         } catch (FileNotFoundException e){
-            JOptionPane.showMessageDialog(null, "Archivo de configuracion no encontrado");
+            throw (e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw (e);
+        } finally {
+            if (fichero != null){
+                fichero.close();
+            }
         }
-        return true;
     }
 
     //VIAJERO
@@ -181,7 +211,8 @@ public class Database {
                 ConstantesViajero.APELLIDO1 + " =?, " +
                 ConstantesViajero.APELLIDO2 + " =?, " +
                 ConstantesViajero.SEXO + " =?, " +
-                ConstantesViajero.FECHANACIMIENTO  +
+                ConstantesViajero.FECHANACIMIENTO + " =?, " +
+                ConstantesViajero.VERSION  +
                 " =? WHERE " +
                 ConstantesViajero.ID + " =? ";
         PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
@@ -194,8 +225,9 @@ public class Database {
         sentencia.setString(7, viajero.getApellido2());
         sentencia.setString(8, viajero.getSexo());
         sentencia.setDate(9, new Date(viajero.getFecha_nacimiento().getTime()));
+        sentencia.setInt(10, viajero.getVersion() + 1);
         //COMPRARADOR
-        sentencia.setInt(10, id);
+        sentencia.setInt(11, id);
         sentencia.executeUpdate();
 
         if(sentencia != null){
@@ -248,6 +280,7 @@ public class Database {
             viajero.setApellido2(resultado.getString(8));
             viajero.setSexo(resultado.getString(9));
             viajero.setFecha_nacimiento(resultado.getDate(10));
+            viajero.setVersion(resultado.getInt(11));
         }
         return  viajero;
     }
@@ -294,6 +327,7 @@ public class Database {
             viajero.setApellido2(resultado.getString(8));
             viajero.setSexo(resultado.getString(9));
             viajero.setFecha_nacimiento(resultado.getDate(10));
+            viajero.setVersion(resultado.getInt(11));
             viajeros.add(viajero);
         }
         return viajeros;
@@ -355,5 +389,23 @@ public class Database {
             paises.add(resultado.getString(3).toUpperCase());
         }
         return paises;
+    }
+
+    /**
+     * Devuelve la version de los datos de un viajero.
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public int getVersionViajero(int id) throws SQLException{
+        String consulta = "SELECT "+ ConstantesViajero.VERSION +" FROM " + ConstantesViajero.TABLA + " WHERE " + ConstantesViajero.ID + " = " + id;
+        PreparedStatement sentencia = conexion.prepareStatement(consulta);
+        ResultSet resultado = sentencia.executeQuery();
+
+        int version = -1;
+        while (resultado.next()){
+            version = resultado.getInt(1);
+        }
+        return  version;
     }
 }

@@ -7,6 +7,7 @@ import util.Database;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -44,7 +45,19 @@ public class VentanaViajero extends JDialog {
         setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
         setModal(true);
         setLocationRelativeTo(null);
-        this.database = new Database();
+        try {
+            this.database = new Database();
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (InstantiationException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (IllegalAccessException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
 
         rellenarCombos();
 
@@ -73,10 +86,22 @@ public class VentanaViajero extends JDialog {
         setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
         setModal(true);
         setLocationRelativeTo(null);
-        database = new Database();
+        try {
+            database = new Database();
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (InstantiationException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (IllegalAccessException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
 
         rellenarCombos();
-        setViajero(viajero);
+        this.viajero = viajero;
         rellenarCampos();
 
         btAceptar.addActionListener(new ActionListener() {
@@ -111,7 +136,7 @@ public class VentanaViajero extends JDialog {
                 cbNacionalidad.addItem(pais);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
         }
 
         //Combo Box documento
@@ -182,6 +207,7 @@ public class VentanaViajero extends JDialog {
             this.viajero.setSexo(cbSexo.getSelectedItem().toString().toUpperCase());
             java.sql.Date fechaNaci = new java.sql.Date(dcFechaNacimiento.getDate().getTime());
             this.viajero.setFecha_nacimiento(fechaNaci);
+            this.viajero.setVersion(viajero.getVersion());
 
             accion = Accion.ACEPTAR;
             setVisible(false);

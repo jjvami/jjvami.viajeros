@@ -16,6 +16,7 @@ public class Viajero {
     private String apellido2;
     private String sexo;
     private Date fecha_nacimiento;
+    private  int version;
 
     // Getters y Setters
     public int getId() {
@@ -96,5 +97,13 @@ public class Viajero {
 
     public void setFecha_nacimiento(Date fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

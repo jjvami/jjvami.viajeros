@@ -27,7 +27,7 @@ public class VentanaEmpresa extends JDialog {
         ACEPTAR, CANCELAR
     }
     private Accion accion;
-    private Empresa empresa;
+    private Empresa empresa = null;
 
     public VentanaEmpresa(){
         setContentPane(panel1);
@@ -37,6 +37,11 @@ public class VentanaEmpresa extends JDialog {
         setLocationRelativeTo(null);
 
         empresa = new Empresa();
+        try {
+            empresa = cargarDatos();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
         rellenarCampos();
 
         btAceptar.addActionListener(new ActionListener() {
@@ -81,16 +86,48 @@ public class VentanaEmpresa extends JDialog {
     }
 
     /**
+     * Metodo que carga los datos de la empresa introducidos en un fichero.
+     */
+    public static Empresa cargarDatos() throws IOException {
+        Properties configuracion = new Properties();
+        FileInputStream fichero = null;
+        Empresa empresa = new Empresa();
+        try {
+            configuracion.load(fichero = new FileInputStream("datosEmpresa.properties"));
+            empresa.setNombre(String.valueOf(configuracion.get("nombre")));
+            empresa.setCodigo(String.valueOf(configuracion.getProperty("codigo")));
+        } catch (FileNotFoundException e) {
+            throw (e);
+        } catch (IOException e) {
+            throw (e);
+        } finally {
+            if(fichero != null){
+                fichero.close();
+            }
+        }
+        return empresa;
+    }
+
+    /**
      * Metodo que rellena los campos del dialogo si hay un archivo de datos de empresa.
      */
     private void rellenarCampos(){
         Properties configuracion = new Properties();
+        FileInputStream fichero = null;
         try {
-            configuracion.load(new FileInputStream("datosEmpresa.properties"));
+            configuracion.load(fichero = new FileInputStream("datosEmpresa.properties"));
             tfNombre.setText(String.valueOf(configuracion.get("nombre")));
             tfCodigo.setText(String.valueOf(configuracion.getProperty("codigo")));
         } catch (IOException e) {
-            e.printStackTrace();
+            //JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if(fichero != null){
+                try {
+                    fichero.close();
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 

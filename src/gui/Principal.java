@@ -5,7 +5,6 @@ import base.Viajero;
 import util.ActualizarDatos;
 import util.ConstantesViajero;
 import util.Database;
-import util.GenerarFichero;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,9 +42,9 @@ public class Principal {
     public JMenuItem refrecar;
     public JMenuItem salir;
 
-    public static Database database;
-    private Empresa empresa;
-    private ActualizarDatos autoActualizar;
+    public static Database database = null;
+    private Empresa empresa = null;
+    private ActualizarDatos autoActualizar = null;
 
     private static DefaultTableModel modeloTablaViajeros;
     private static DefaultTableModel modeloTablaRegistro;
@@ -55,16 +55,45 @@ public class Principal {
 
     public Principal(){
         crearJMenuBar();
-        autoActualizar = new ActualizarDatos();
-        database = new Database();
-        empresa = new Empresa();
+        try {
+            database = new Database();
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InstantiationException e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalAccessException e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            empresa = VentanaEmpresa.cargarDatos();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
         inicializarTablas();
+        autoActualizar = new ActualizarDatos();
         autoActualizar.execute();
 
         conectarBd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                database.conectar();
+                try {
+                    database.conectar();
+                } catch (SQLException e1) {
+                    JOptionPane.showMessageDialog(null, e1.toString(), null, JOptionPane.ERROR_MESSAGE);
+                } catch (ClassNotFoundException e1) {
+                    JOptionPane.showMessageDialog(null, e1.toString(), null, JOptionPane.ERROR_MESSAGE);
+                } catch (InstantiationException e1) {
+                    JOptionPane.showMessageDialog(null, e1.toString(), null, JOptionPane.ERROR_MESSAGE);
+                } catch (IllegalAccessException e1) {
+                    JOptionPane.showMessageDialog(null, e1.toString(), null, JOptionPane.ERROR_MESSAGE);
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, e1.toString(), null, JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         datosEmpresa.addActionListener(new ActionListener() {
@@ -191,7 +220,12 @@ public class Principal {
         try {
             viajeros = database.getViajeros();
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (viajeros == null){
+                System.out.print("fds");
+                return;//todo
+            }
         }
 
         modeloTablaViajeros.setNumRows(0);
@@ -235,7 +269,7 @@ public class Principal {
         try {
             database.nuevoViajero(dialogoViajero.getViajero());
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
         }
         rellenarTablas();
     }
@@ -256,9 +290,14 @@ public class Principal {
                 if(dialogoViajero.mostrarDialogo() == VentanaViajero.Accion.CANCELAR){
                     return;
                 }
-                database.modificarVIajero((Integer) modeloTablaViajeros.getValueAt(row, 0), dialogoViajero.getViajero());
+
+                if(database.getVersionViajero((Integer) modeloTablaViajeros.getValueAt(row, 0)) != dialogoViajero.getViajero().getVersion()){
+                    JOptionPane.showMessageDialog(null, "Los datos del viajero han sido modificados por otro usuario mientra usted los cambiaba, por lo que sus cambios no han sido efectuados", null, JOptionPane.WARNING_MESSAGE);
+                }else {
+                    database.modificarVIajero((Integer) modeloTablaViajeros.getValueAt(row, 0), dialogoViajero.getViajero());
+                }
             } catch (SQLException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
             }
         }
         rellenarTablas();
@@ -275,7 +314,7 @@ public class Principal {
             try {
                 database.eliminarViajero((Integer) modeloTablaViajeros.getValueAt(row, 0));
             } catch (SQLException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
             }
         }
         rellenarTablas();

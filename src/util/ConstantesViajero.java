@@ -15,4 +15,5 @@ public class ConstantesViajero {
     public final static String APELLIDO2 = "apellido_2";
     public final static String SEXO = "sexo";
     public final static String FECHANACIMIENTO = "fecha_nacimiento";
+    public final static String VERSION = "version";
 }

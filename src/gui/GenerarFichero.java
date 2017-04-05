@@ -1,4 +1,4 @@
-package util;
+package gui;
 
 import javax.swing.*;
 import java.io.File;
