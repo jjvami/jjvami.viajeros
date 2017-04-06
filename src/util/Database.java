@@ -286,6 +286,35 @@ public class Database {
     }
 
     /**
+     * Metodo que devuelve el viajero correspondiente a la id otrogada.
+     * @param dni
+     * @return
+     * @throws SQLException
+     */
+    public Viajero getViajeroDni(String dni) throws SQLException{
+        String consulta = "SELECT * FROM " + ConstantesViajero.TABLA + " WHERE " + ConstantesViajero.NUMERODOCUMENTO + " = " + dni;
+        PreparedStatement sentencia = conexion.prepareStatement(consulta);
+        ResultSet resultado = sentencia.executeQuery();
+
+        Viajero viajero = null;
+        while (resultado.next()){
+            viajero = new Viajero();
+            viajero.setId(resultado.getInt(1));
+            viajero.setNacionalidad(resultado.getString(2));
+            viajero.setDocumento(resultado.getString(3));
+            viajero.setNumero_documento(resultado.getString(4));
+            viajero.setFecha_expedicion(resultado.getDate(5));
+            viajero.setNombre(resultado.getString(6));
+            viajero.setApellido1(resultado.getString(7));
+            viajero.setApellido2(resultado.getString(8));
+            viajero.setSexo(resultado.getString(9));
+            viajero.setFecha_nacimiento(resultado.getDate(10));
+            viajero.setVersion(resultado.getInt(11));
+        }
+        return  viajero;
+    }
+
+    /**
      * Devuelve una arraylist de viajeros con todos los que hay en la BD.
      * @return
      * @throws SQLException
