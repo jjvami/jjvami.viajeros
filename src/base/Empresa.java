@@ -1,5 +1,7 @@
 package base;
 
+import com.sun.media.sound.EmergencySoundbank;
+
 import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +15,11 @@ public class Empresa {
 
     private String nombre;
     private String codigo;
+    private int contFicehros;
+
+    public Empresa(){
+        contFicehros = 0;
+    }
 
     // Getters y Setters
 
@@ -31,4 +38,14 @@ public class Empresa {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
+
+    public int getContFicehros() {
+        return contFicehros;
+    }
+
+    public void setContFicehros(int contFicehros) {
+        this.contFicehros = contFicehros;
+    }
 }
+
+

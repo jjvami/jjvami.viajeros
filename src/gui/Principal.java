@@ -221,11 +221,6 @@ public class Principal {
             viajeros = database.getViajeros();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString(), null, JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (viajeros == null){
-                System.out.print("fds");
-                return;//todo
-            }
         }
 
         modeloTablaViajeros.setNumRows(0);
@@ -408,15 +403,19 @@ public class Principal {
             if (rows == 0){
                 JOptionPane.showMessageDialog(null, "No hay viajeros en la tabla de registro");
             }else {
-                String contenido = "1|" + empresa.getCodigo() + "|" + empresa.getNombre() + "|" + fecha + "|" + hora + "|" + rows + "|\n";
+                String contenido = "1|" + empresa.getCodigo() + "|" + empresa.getNombre() + "|" + fecha + "|" + hora + "|" + rows + "|\r\n";
                 for(int i=0; i<rows; i++) {
                     contenido += "2|";
                     for(int j=1; j<cols; j++){
-                        contenido += tableModel.getValueAt(i,j)+"|";
+                        if (tableModel.getValueAt(i, j) == null) {
+                            contenido += ""+"|";
+                        }else {
+                            contenido += tableModel.getValueAt(i,j)+"|";
+                        }
                     }
-                    contenido += "\n";
+                    contenido += "\r\n";
                 }
-                new GenerarFichero(contenido);
+                new GenerarFichero(contenido, empresa);
             }
         }
     }

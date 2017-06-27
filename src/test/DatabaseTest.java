@@ -35,6 +35,7 @@ public class DatabaseTest {
         v.setDocumento("DNI");
         v.setSexo("HOMBRE");
         v.setNumero_documento("12345679");
+        v.setVersion(2);
 
         return v;
     }

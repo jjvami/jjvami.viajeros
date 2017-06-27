@@ -22,6 +22,7 @@ public class VentanaEmpresa extends JDialog {
     private JTextField tfCodigo;
     private JButton btCancelar;
     private JButton btAceptar;
+    private JLabel lbNumFicheros;
 
     public enum Accion{
         ACEPTAR, CANCELAR
@@ -75,6 +76,7 @@ public class VentanaEmpresa extends JDialog {
         Properties configuracion = new Properties();
         configuracion.setProperty("nombre", tfNombre.getText().toUpperCase());
         configuracion.setProperty("codigo", tfCodigo.getText().toUpperCase());
+        configuracion.setProperty("contFicheros",lbNumFicheros.getText().toUpperCase());
         try {
             configuracion.store(new FileOutputStream("datosEmpresa.properties"), "Archivo de datos");
         } catch (FileNotFoundException e){
@@ -96,6 +98,7 @@ public class VentanaEmpresa extends JDialog {
             configuracion.load(fichero = new FileInputStream("datosEmpresa.properties"));
             empresa.setNombre(String.valueOf(configuracion.get("nombre")));
             empresa.setCodigo(String.valueOf(configuracion.getProperty("codigo")));
+            empresa.setContFicehros(Integer.parseInt(String.valueOf(configuracion.getProperty("contFicheros"))));
         } catch (FileNotFoundException e) {
             throw (e);
         } catch (IOException e) {
@@ -118,6 +121,7 @@ public class VentanaEmpresa extends JDialog {
             configuracion.load(fichero = new FileInputStream("datosEmpresa.properties"));
             tfNombre.setText(String.valueOf(configuracion.get("nombre")));
             tfCodigo.setText(String.valueOf(configuracion.getProperty("codigo")));
+            lbNumFicheros.setText(String.valueOf(configuracion.getProperty("contFicheros")));
         } catch (IOException e) {
             //JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {

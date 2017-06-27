@@ -88,13 +88,11 @@ public class Database {
 
         try {
             guardarConfiguracion();
-            System.out.println("1");
         } catch (IOException e) {
             throw(e);
         }
 
         try {
-            System.out.println("2");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":3306" + "/" + combo, usuario, password);
         } catch (InstantiationException e) {
@@ -106,7 +104,6 @@ public class Database {
         } catch (SQLException e) {
             throw(e);
         }
-        System.out.println("4");
     }
 
     /**
@@ -173,8 +170,9 @@ public class Database {
                 ConstantesViajero.APELLIDO1 + ", " +
                 ConstantesViajero.APELLIDO2 + ", " +
                 ConstantesViajero.SEXO + ", " +
-                ConstantesViajero.FECHANACIMIENTO  +
-                " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ConstantesViajero.FECHANACIMIENTO  +  ", " +
+                ConstantesViajero.VERSION  +
+                " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement sentencia = conexion.prepareStatement(sentenciaSql);
         sentencia.setString(1, viajero.getNacionalidad());
         sentencia.setString(2, viajero.getDocumento());
@@ -185,6 +183,7 @@ public class Database {
         sentencia.setString(7, viajero.getApellido2());
         sentencia.setString(8, viajero.getSexo());
         sentencia.setDate(9, new Date(viajero.getFecha_nacimiento().getTime()));
+        sentencia.setInt(10, viajero.getVersion());
         sentencia.executeUpdate();
 
         if(sentencia != null){
