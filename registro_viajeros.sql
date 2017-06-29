@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-06-2017 a las 13:55:31
+-- Tiempo de generación: 29-06-2017 a las 14:07:54
 -- Versión del servidor: 10.1.19-MariaDB
 -- Versión de PHP: 5.5.38
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `registro_viajeros`
 --
+CREATE DATABASE IF NOT EXISTS `registro_viajeros` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `registro_viajeros`;
 
 -- --------------------------------------------------------
 
@@ -26,11 +28,12 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `paises`
 --
 
-CREATE TABLE `paises` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `paises` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `iso` char(2) DEFAULT NULL,
-  `nombre` varchar(80) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `nombre` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `paises`
@@ -284,8 +287,8 @@ INSERT INTO `paises` (`id`, `iso`, `nombre`) VALUES
 -- Estructura de tabla para la tabla `viajeros`
 --
 
-CREATE TABLE `viajeros` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `viajeros` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `nacionalidad` varchar(50) NOT NULL,
   `documento` varchar(50) NOT NULL,
   `numero_documento` varchar(50) NOT NULL,
@@ -295,39 +298,10 @@ CREATE TABLE `viajeros` (
   `apellido_2` varchar(50) DEFAULT NULL,
   `sexo` varchar(50) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `version` int(100) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `version` int(100) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `paises`
---
-ALTER TABLE `paises`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `viajeros`
---
-ALTER TABLE `viajeros`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `paises`
---
-ALTER TABLE `paises`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
---
--- AUTO_INCREMENT de la tabla `viajeros`
---
-ALTER TABLE `viajeros`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
